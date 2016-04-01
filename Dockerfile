@@ -1,7 +1,9 @@
 FROM eboraas/apache-php
 MAINTAINER Jacob Michelsen <jacob.michelsen@tii.se>
 
-RUN apt-get update && apt-get -y install git curl nodejs npm php5-mcrypt php5-json && apt-get -y autoremove && apt-get clean
+RUN apt-get update && apt-get -y install git curl nodejs npm php5-mcrypt php5-json php5-mysql && apt-get -y autoremove && apt-get clean
+
+RUN echo 'extension=pdo_mysql.so' >> /etc/php5/apache2/php.ini
 
 RUN /usr/sbin/a2enmod rewrite
 
@@ -25,6 +27,10 @@ RUN npm install
 
 RUN npm install gulp -g
 
+RUN rm .env
+
+RUN cp dockerdeployment/env-docker ./.env
+
 RUN /bin/chown www-data:www-data -R /var/www/laravel/storage /var/www/laravel/bootstrap/cache
 
 RUN gulp
@@ -32,4 +38,4 @@ RUN gulp
 EXPOSE 80
 EXPOSE 443
 
-CMD ["/usr/sbin/apache2ctl", "-D", "FOREGROUND"]
+CMD php artisan migrate && /usr/sbin/apache2ctl -D FOREGROUND
