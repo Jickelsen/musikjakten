@@ -27,8 +27,6 @@ RUN npm install
 
 RUN npm install gulp -g
 
-RUN rm .env
-
 RUN cp dockerdeployment/env-docker ./.env
 
 RUN /bin/chown www-data:www-data -R /var/www/laravel/storage /var/www/laravel/bootstrap/cache
