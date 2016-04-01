@@ -14,7 +14,7 @@ var vueify = require('laravel-elixir-vueify');
  */
 
 elixir.config.js.browserify.watchify = {
-  enabled: true,
+  enabled: false,
   options: {
     poll: true
   }
