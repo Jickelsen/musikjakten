@@ -1,18 +1,18 @@
-FROM eboraas/apache-php
+FROM ubuntu:14.04
 MAINTAINER Jacob Michelsen <jacob.michelsen@tii.se>
 
-RUN apt-get update && apt-get -y install git curl nodejs npm php5-mcrypt php5-json php5-mysql && apt-get -y autoremove && apt-get clean
-
-RUN echo 'extension=pdo_mysql.so' >> /etc/php5/apache2/php.ini
+RUN apt-get update && \
+    apt-get -y install apache2 php5 libapache2-mod-php5 php5-mcrypt php5-json curl git nodejs npm php5-mysql && \
+    apt-get clean && \
+    update-rc.d apache2 defaults && \
+    php5enmod mcrypt && \
+    rm -rf /var/www/html && \
+    curl -sS https://getcomposer.org/installer | php && \
+    mv composer.phar /usr/local/bin/composer
 
 RUN /usr/sbin/a2enmod rewrite
 
-ADD dockerdeployment/000-laravel.conf /etc/apache2/sites-available/
-ADD dockerdeployment/001-laravel-ssl.conf /etc/apache2/sites-available/
-RUN /usr/sbin/a2dissite '*' && /usr/sbin/a2ensite 000-laravel 001-laravel-ssl
-
-RUN /usr/bin/curl -sS https://getcomposer.org/installer |/usr/bin/php
-RUN /bin/mv composer.phar /usr/local/bin/composer
+ADD dockerdeployment/000-default.conf /etc/apache2/sites-available/
 
 # Copy the local repo files to the served laravel dir
 ADD . /var/www/laravel
