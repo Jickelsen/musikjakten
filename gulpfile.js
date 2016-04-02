@@ -2,6 +2,8 @@ var elixir = require('laravel-elixir');
 
 var vueify = require('laravel-elixir-vueify');
 
+var util = require('gulp-util');
+
 /*
  |--------------------------------------------------------------------------
  | Elixir Asset Management
@@ -14,7 +16,7 @@ var vueify = require('laravel-elixir-vueify');
  */
 
 elixir.config.js.browserify.watchify = {
-  enabled: false,
+  enabled: !util.env.production,
   options: {
     poll: true
   }

@@ -8,6 +8,7 @@
     "gulp": "^3.8.8",
     "gulp-remove-use-strict": "0.0.2",
     "gulp-watch": "^4.3.5",
+    "gulp-util": "^3.0.7",
     "vue-hot-reload-api": "^1.3.2",
     "vueify-insert-css": "^1.0.0"
   },
